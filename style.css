@@ -1,0 +1,32 @@
+body{
+    margin:0;
+    padding:0;
+    background:#0f172a;
+    font-family:Arial;
+    color:white;
+}
+
+.container{
+    text-align:center;
+    margin-top:150px;
+}
+
+h1{
+    color:#38bdf8;
+    font-size:50px;
+}
+
+p{
+    font-size:22px;
+    margin-top:20px;
+}
+
+button{
+    margin-top:30px;
+    padding:15px 30px;
+    border:none;
+    background:#22c55e;
+    color:white;
+    font-size:18px;
+    border-radius:8px;
+}
