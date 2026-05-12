@@ -36,13 +36,13 @@ pipeline {
 
         stage('Trivy Scan') {
             steps {
-                sh 'trivy image $IMAGE_NAME'
+                sh '/usr/bin/trivy fs --timeout 10m .'
             }
         }
 
         stage('Deploy Container') {
             steps {
-                sh '''
+                sh """
                 docker stop $CONTAINER_NAME || true
                 docker rm $CONTAINER_NAME || true
 
@@ -50,7 +50,7 @@ pipeline {
                 --name $CONTAINER_NAME \
                 -p 80:80 \
                 $IMAGE_NAME
-                '''
+                """
             }
         }
     }
