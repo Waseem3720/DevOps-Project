@@ -36,13 +36,13 @@ pipeline {
         }
 
         stage('Trivy Scan') {
-            steps {
-                sh '''
-                export TRIVY_CACHE_DIR=/var/lib/jenkins/trivy-cache
-                /usr/bin/trivy fs --cache-dir $TRIVY_CACHE_DIR --timeout 10m .
-                '''
-            }
-        }
+                 steps {
+                         sh '''
+                         export TRIVY_CACHE_DIR=/var/lib/jenkins/trivy-cache
+                          /usr/bin/trivy fs --scanners vuln --cache-dir $TRIVY_CACHE_DIR --timeout 10m .
+                          '''
+                       }
+               }
 
         stage('Deploy Container') {
             steps {
