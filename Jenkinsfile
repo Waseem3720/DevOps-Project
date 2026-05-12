@@ -5,6 +5,7 @@ pipeline {
     environment {
         IMAGE_NAME = "devops-project"
         CONTAINER_NAME = "devops-container"
+        TRIVY_CACHE_DIR = "/var/lib/jenkins/trivy-cache"
     }
 
     stages {
@@ -18,13 +19,13 @@ pipeline {
 
         stage('SonarQube Scan') {
             steps {
-                echo 'Running SonarQube Scan'
+                echo 'Running SonarQube Scan (not configured yet)'
             }
         }
 
         stage('OWASP Dependency Check') {
             steps {
-                echo 'Running OWASP Dependency Check'
+                echo 'Running OWASP Dependency Check (not configured yet)'
             }
         }
 
@@ -36,13 +37,16 @@ pipeline {
 
         stage('Trivy Scan') {
             steps {
-                sh '/usr/bin/trivy fs --timeout 10m .'
+                sh '''
+                export TRIVY_CACHE_DIR=/var/lib/jenkins/trivy-cache
+                /usr/bin/trivy fs --cache-dir $TRIVY_CACHE_DIR --timeout 10m .
+                '''
             }
         }
 
         stage('Deploy Container') {
             steps {
-                sh """
+                sh '''
                 docker stop $CONTAINER_NAME || true
                 docker rm $CONTAINER_NAME || true
 
@@ -50,7 +54,7 @@ pipeline {
                 --name $CONTAINER_NAME \
                 -p 80:80 \
                 $IMAGE_NAME
-                """
+                '''
             }
         }
     }
