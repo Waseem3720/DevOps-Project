@@ -37,20 +37,26 @@ pipeline {
         }
 
         stage('Trivy Scan') {
-            steps {
-                sh '''
-                export TRIVY_CACHE_DIR=/var/lib/jenkins/trivy-cache
-                mkdir -p $TRIVY_CACHE_DIR
+    steps {
+        sh '''
+        export TRIVY_CACHE_DIR=/var/lib/jenkins/trivy-cache
 
-                /usr/bin/trivy image \
-                    --scanners vuln \
-                    --cache-dir $TRIVY_CACHE_DIR \
-                    --timeout 10m \
-                    $IMAGE_NAME
-                '''
-            }
-        }
+        mkdir -p $TRIVY_CACHE_DIR
 
+        /usr/bin/trivy image \
+        --download-db-only \
+        --cache-dir $TRIVY_CACHE_DIR \
+        --timeout 15m || true
+
+        /usr/bin/trivy image \
+        --skip-db-update \
+        --scanners vuln \
+        --cache-dir $TRIVY_CACHE_DIR \
+        --timeout 15m \
+        $IMAGE_NAME
+        '''
+    }
+}
         stage('Deploy to EC2') {
             steps {
                 sh '''
