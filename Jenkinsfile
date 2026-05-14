@@ -59,19 +59,24 @@ pipeline {
 }
         stage('Deploy to EC2') {
     steps {
-        sh """
-        ssh -o StrictHostKeyChecking=no ubuntu@52.205.233.81 << EOF
+        sh '''
+        scp -o StrictHostKeyChecking=no -r * ubuntu@52.205.233.81:/home/ubuntu/app
+
+        ssh -o StrictHostKeyChecking=no ubuntu@52.205.233.81 "
+
+        cd /home/ubuntu/app
 
         docker stop devops-container || true
         docker rm devops-container || true
+
+        docker build -t devops-project .
 
         docker run -d \
         --name devops-container \
         -p 80:80 \
         devops-project
-
-        EOF
-        """
+        "
+        '''
     }
 }
     }
