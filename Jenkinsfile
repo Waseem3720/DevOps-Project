@@ -58,25 +58,21 @@ pipeline {
     }
 }
         stage('Deploy to EC2') {
-            steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
+    steps {
+        sh """
+        ssh -o StrictHostKeyChecking=no ubuntu@52.205.233.81 << EOF
 
-                echo "Stopping old container..."
-                docker stop $CONTAINER_NAME || true
-                docker rm $CONTAINER_NAME || true
+        docker stop devops-container || true
+        docker rm devops-container || true
 
-                echo "Running new container..."
-                docker run -d \
-                    --name $CONTAINER_NAME \
-                    -p 80:80 \
-                    $IMAGE_NAME
+        docker run -d \
+        --name devops-container \
+        -p 80:80 \
+        devops-project
 
-                echo "Deployment successful!"
-
-                EOF
-                '''
-            }
-        }
+        EOF
+        """
+    }
+}
     }
 }
