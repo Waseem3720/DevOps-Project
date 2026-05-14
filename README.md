@@ -2,7 +2,7 @@
 
 ## CI/CD Pipeline Status
 
-This project demonstrates a complete DevOps pipeline by using:
+This project demonstrates a complete DevOps pipeline  using:
 
 - GitHub
 - Jenkins
