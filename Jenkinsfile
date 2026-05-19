@@ -27,7 +27,7 @@ pipeline {
                     sonar-scanner \
                     -Dsonar.projectKey=devops-project \
                     -Dsonar.sources=. \
-                    -Dsonar.host.url=http://127.0.0.1:9000 \
+                    -Dsonar.host.url=http://http://192.168.72.128:9000 \
                     -Dsonar.token=$SONAR_TOKEN
                     '''
                 }
