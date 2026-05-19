@@ -18,11 +18,19 @@ pipeline {
             }
         }
 
-        stage('SonarQube Scan') {
-            steps {
-                echo 'SonarQube Scan skipped (not configured yet)'
-            }
+       stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('sonar-server') {
+            sh '''
+            sonar-scanner \
+            -Dsonar.projectKey=devops-project \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://192.168.72.128:9000 \
+            -Dsonar.login=sonar-token
+            '''
         }
+    }
+}
 
         stage('OWASP Dependency Check') {
             steps {
