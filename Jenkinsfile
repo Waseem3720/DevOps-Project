@@ -22,18 +22,19 @@ pipeline {
     steps {
         withSonarQubeEnv('sonar-server') {
             withEnv(["PATH+SONAR=${tool 'sonar-scanner'}/bin"]) {
-                sh '''
-                sonar-scanner \
-                -Dsonar.projectKey=devops-project \
-                -Dsonar.sources=. \
-                -Dsonar.host.url=http://127.0.0.1:9000 \
-                -Dsonar.login=sonar-token
-                '''
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh '''
+                    sonar-scanner \
+                    -Dsonar.projectKey=devops-project \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=http://127.0.0.1:9000 \
+                    -Dsonar.token=$SONAR_TOKEN
+                    '''
+                }
             }
         }
     }
 }
-
         stage('OWASP Dependency Check') {
             steps {
                 echo 'OWASP Dependency Check skipped (not configured yet)'
