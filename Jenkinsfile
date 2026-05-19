@@ -21,13 +21,15 @@ pipeline {
        stage('SonarQube Analysis') {
     steps {
         withSonarQubeEnv('sonar-server') {
-            sh '''
-            sonar-scanner \
-            -Dsonar.projectKey=devops-project \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=http://192.168.72.128:9000 \
-            -Dsonar.login=sonar-token
-            '''
+            withEnv(["PATH+SONAR=${tool 'sonar-scanner'}/bin"]) {
+                sh '''
+                sonar-scanner \
+                -Dsonar.projectKey=devops-project \
+                -Dsonar.sources=. \
+                -Dsonar.host.url=http://192.168.72.128:9000 \
+                -Dsonar.login=sonar-token
+                '''
+            }
         }
     }
 }
