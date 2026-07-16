@@ -83,7 +83,8 @@ This project follows **DevSecOps principles**, where security is integrated into
 
 ## 📸 Architecture
 
-*(Add your architecture diagram image here)*
+<img width="1337" height="438" alt="image" src="https://github.com/user-attachments/assets/9498547c-8204-4543-9de6-a71539edadbf" />
+
 
 ---
 
